@@ -1,0 +1,97 @@
+SQL> SELECT ENAME, SAL
+  2  FROM EMP
+  3  WHERE SAL > ALL (SELECT SAL 
+  4                   FROM EMP
+  5                   WHERE JOB = 'SALESMAN');
+
+ENAME             SAL
+---------- ----------
+JONES            2975
+BLAKE            2850
+CLARK            2450
+SCOTT            3000
+KING             5000
+FORD             3000
+
+6 rows selected.
+
+SQL> SELECT EMP.* 
+  2  FROM EMP
+  3  WHERE HIREDATE > ALL (SELECT HIREDATE
+  4                         FROM EMP
+  5                         WHERE JOB = 'CLERK');
+
+no rows selected
+
+SQL> SELECT ENAME, SAL
+  2  FROM EMP
+  3  WHERE SAL < ANY (SELECT SAL 
+  4                   FROM EMP 
+  5                   WHERE JOB = 'MANAGER');
+
+ENAME             SAL
+---------- ----------
+SMITH             800
+JAMES             950
+ADAMS            1100
+WARD             1250
+MARTIN           1250
+MILLER           1300
+TURNER           1500
+ALLEN            1600
+CLARK            2450
+BLAKE            2850
+
+10 rows selected.
+
+SQL> SELECT ENAME, HIREDATE
+  2  FROM EMP
+  3  WHERE HIREDATE < ALL (SELECT HIREDATE
+  4                        FROM EMP
+  5                        WHERE JOB = 'MANAGER');
+
+ENAME      HIREDATE
+---------- ---------
+SMITH      17-DEC-80
+ALLEN      20-FEB-81
+WARD       22-FEB-81
+
+SQL> SELECT ENAME, SAL, HIREDATE
+  2  FROM EMP
+  3  WHERE HIREDATE > ALL (SELECT HIREDATE
+  4                        FROM EMP 
+  5                        WHERE JOB = 'MANAGER')
+  6         AND SAL > ALL (SELECT SAL 
+  7                        FROM EMP
+  8                         WHERE JOB = 'CLERK');
+
+ENAME             SAL HIREDATE
+---------- ---------- ---------
+SCOTT            3000 19-APR-87
+KING             5000 17-NOV-81
+TURNER           1500 08-SEP-81
+FORD             3000 03-DEC-81
+
+SQL> SELECT EMP.* 
+  2  FROM EMP
+  3  WHERE JOB = 'CLERK' 
+  4  AND HIREDATE < ANY (SELECT HIREDATE
+  5                      FROM EMP 
+  6                      WHERE JOB = 'SALESMAN');
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20
+
+SQL> SELECT ENAME, HIREDATE
+  2  FROM EMP
+  3  WHERE HIREDATE > ALL (SELECT HIREDATE 
+  4                        FROM EMP 
+  5                        WHERE DEPTNO = 10);
+
+ENAME      HIREDATE
+---------- ---------
+SCOTT      19-APR-87
+ADAMS      23-MAY-87
+
+SQL> 
